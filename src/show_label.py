@@ -57,12 +57,28 @@ def DrawBox(img, boxPoints):
     leftTop, rightBottom = boxPoints
     draw.rectangle([leftTop, rightBottom], outline="#00FF00", width=3)
 
+
+def GetBoxPoints(fileBaseName):
+    """
+    该函数用于提取图片边框的左上角坐标和右下角坐标
+    :param filePath: 传入的图片的文件名, 如abc.jpg
+    :return: 边框的列表, 如[[111,222], [666, 777]]，分别为左上角和右下角坐标
+    """
+    fileBaseName = os.path.splitext(fileBaseName)[0]
+    _, angle, boxPoints, vertexs, clpNubmer, brightness, blur = fileBaseName.split('-')
+    boxPoints = boxPoints.split("_")
+    # boxPoints = [tuple(map(float, point.split('&'))) for point in boxPoints]
+    boxPoints = [list(map(float, point.split('&'))) for point in boxPoints]
+    return boxPoints
+
 if __name__ == "__main__":
-    filePath = "../pic/test/02-90_90-248&360_507&437-509&443_232&452_234&357_511&348-0_0_5_30_27_32_30-139-38.jpg"
+    filePath = "../pic/test/02-90_90-260&343_536&434-547&429_260&428_268&346_555&347-0_0_23_32_24_33_15-117-54.jpg"
     # 提取文件名
     baseName = os.path.basename(filePath)
+    print(GetBoxPoints(baseName))
     # 移除文件扩展名
     baseName = os.path.splitext(baseName)[0]
+    print(os.listdir("../pic/test"))
 
     # 分割标注信息
     # 根据图像名分割标注，第一个忽略，依次为角度，边框点，顶点，车牌号码，亮度，模糊度

@@ -50,3 +50,7 @@ draw.rectangle(tuple(*boxes), outline="#00FF00", width=3)
 # 保存或显示图像
 # sample_image = F.to_pil_image(sample_image.squeeze(0).cpu())
 sb.show()
+
+# 通过坐标来分割图片并保存到相应位置
+last = sb.crop(tuple(*boxes))
+last.save('../pic/test/sb.jpg')

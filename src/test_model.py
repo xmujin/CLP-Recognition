@@ -29,7 +29,7 @@ model.load_state_dict(torch.load('car_plate_model.pth'))
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model.to(device)
 # 在示例图像上测试模型
-sample_image = Image.open('../pic/test/hhh.jpg').convert('RGB')
+sample_image = Image.open('../pic/test/250.jpg').convert('RGB')
 sb = sample_image.copy()
 # 将该图片转化为张量
 sample_image = F.to_tensor(sample_image).unsqueeze(0).to(device)
@@ -53,4 +53,4 @@ sb.show()
 
 # 通过坐标来分割图片并保存到相应位置
 last = sb.crop(tuple(*boxes))
-last.save('../pic/test/sb.jpg')
+last.save('../pic/test/11.jpg')

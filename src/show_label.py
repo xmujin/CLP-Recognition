@@ -9,7 +9,7 @@ import os
 from PIL import Image, ImageDraw
 
 # 02-90_90-248&360_507&437-509&443_232&452_234&357_511&348-0_0_5_30_27_32_30-139-38
-# 02 不知道啥意思
+# 02 车牌面积与整个图片面积的比例。
 # 90_90 表示水平倾斜角、垂直倾斜角
 # 248&360_507&437 表示车牌边界框的左上角和右下角坐标
 # 509&443_232&452_234&357_511&348 表示车牌四个顶点的坐标，（边界框是将车牌完整框起来的框）
@@ -70,6 +70,8 @@ def GetBoxPoints(fileBaseName):
     # boxPoints = [tuple(map(float, point.split('&'))) for point in boxPoints]
     boxPoints = [list(map(float, point.split('&'))) for point in boxPoints]
     return boxPoints
+
+
 
 if __name__ == "__main__":
     filePath = "../pic/test/02-90_90-260&343_536&434-547&429_260&428_268&346_555&347-0_0_23_32_24_33_15-117-54.jpg"

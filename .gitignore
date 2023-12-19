@@ -5,3 +5,6 @@
 /.idea/misc.xml
 /.idea/course_design.iml
 /.idea/.gitignore
+/src/*
+/deprecated/*
+

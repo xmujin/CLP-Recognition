@@ -101,4 +101,4 @@ if __name__ == "__main__":
     train_model(model, dataloader, num_epochs=5, device=device)
 
     # 保存训练好的模型
-    torch.save(model.state_dict(), 'car_plate_model.pth')
+    torch.save(model.state_dict(), '../model/car_plate_model.pth')

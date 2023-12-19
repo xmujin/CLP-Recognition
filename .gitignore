@@ -6,3 +6,4 @@
 /.idea/course_design.iml
 /.idea/.gitignore
 /src/main.py
+/src/show_label.py

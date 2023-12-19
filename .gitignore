@@ -7,3 +7,4 @@
 /.idea/.gitignore
 /src/main.py
 /src/show_label.py
+/src/character_split.py

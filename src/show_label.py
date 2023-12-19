@@ -6,6 +6,7 @@
 # @Description : 该程序用于实现对图片的标注信息进行分割
 import os
 
+import numpy as np
 from PIL import Image, ImageDraw
 
 # 02-90_90-248&360_507&437-509&443_232&452_234&357_511&348-0_0_5_30_27_32_30-139-38
@@ -71,16 +72,21 @@ def GetBoxPoints(fileBaseName):
     boxPoints = [list(map(float, point.split('&'))) for point in boxPoints]
     return boxPoints
 
-
+def GetVertexes(fileName):
+    fileBaseName = os.path.splitext(fileName)[0]
+    _, _, _, vertexs, _, _, _ = fileBaseName.split('-')
+    vertexs = vertexs.split("_")
+    vertexs = [list(map(float, vertex.split('&'))) for vertex in vertexs]
+    #左上，右上，左下，右下
+    vertexsTrans = [vertexs[2], vertexs[3], vertexs[1], vertexs[0]]
+    return np.array(vertexsTrans, dtype=int)
 
 if __name__ == "__main__":
     filePath = "../pic/test/02-90_90-260&343_536&434-547&429_260&428_268&346_555&347-0_0_23_32_24_33_15-117-54.jpg"
     # 提取文件名
     baseName = os.path.basename(filePath)
-    print(GetBoxPoints(baseName))
     # 移除文件扩展名
     baseName = os.path.splitext(baseName)[0]
-    print(os.listdir("../pic/test"))
 
     # 分割标注信息
     # 根据图像名分割标注，第一个忽略，依次为角度，边框点，顶点，车牌号码，亮度，模糊度

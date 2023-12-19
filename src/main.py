@@ -22,4 +22,3 @@ if __name__ == '__main__':
     myWin.show()  # 在桌面显示控件 myWin
     sys.exit(app.exec_())  # 结束进程，退出程序
 
-

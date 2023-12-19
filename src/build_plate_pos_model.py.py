@@ -2,8 +2,8 @@
 # @Time    : 2023-12-14
 # @Author  :
 # @Sid     :
-# @File    : plate_recognition.py
-# @Description : 车辆定位深度学习数据集的建立，训练模型的建立
+# @File    : build_plate_pos_model.py.py
+# @Description : 构建了车辆定位的深度学习模型， 使用f r-cnn
 import os
 import torch
 import torchvision
@@ -81,14 +81,9 @@ if __name__ == "__main__":
     model = torchvision.models.detection.fasterrcnn_resnet50_fpn(weights='DEFAULT')
 
     num_classes = 2  # 背景和车牌两个类别
-    # 这一行代码获取了 Faster R-CNN 模型中用于分类的全连接层（fc）的输入特征数。这个特征数会在下一步用于定义新的分类层。
+    # 获取模型中用于分类的全连接层（fc）的输入特征数
     in_features = model.roi_heads.box_predictor.cls_score.in_features
     ##
-    # 这一行代码替换了模型的分类头部。
-    # 它创建了一个新的 FastRCNNPredictor 对象，
-    # 该对象使用之前获取的输入特征数 in_features
-    # 和指定的类别数 num_classes 来定义一个新的分类层。
-    # 这是为了适应你的特定任务，其中有两个类别。
     # #
     model.roi_heads.box_predictor = torchvision.models.detection.faster_rcnn.FastRCNNPredictor(in_features, num_classes)
     print(torch.cuda.is_available())  # 查看CUDA是否可用

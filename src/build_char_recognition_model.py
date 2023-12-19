@@ -1,13 +1,16 @@
+# -*- coding: utf-8 -*-
+# @Time    : 2023-12-14
+# @Author  : 向波
+# @Sid     : 12103990437
+# @File    : build_char_recognition_model.py
+# @Description : 用于构建字符识别的CNN模型
 import os
 
 import cv2
-import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-import torchvision.transforms as transforms
-import torchvision.transforms.functional
 from torchvision.transforms import functional
 from torch.utils.data import DataLoader, Dataset
 device = torch.device("cuda")

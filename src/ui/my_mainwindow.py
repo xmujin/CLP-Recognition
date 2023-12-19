@@ -9,7 +9,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog
 
 from src.ui.my_ui_mainwindow import Ui_MainWindow
 from src.show_label import GetVertexes
-from src.test_plate_right import GetRightPlate
+from src.plate_right import GetRightPlate
 from src.character_split import FindVSplitPos, FindHSplitPos, SplitCharacters
 #from PyQt5 import QtCore, QtGui, QtWidgets
 

@@ -3,7 +3,7 @@ import sys
 import cv2
 import numpy as np
 from PyQt5 import QtCore
-from PyQt5.QtCore import QDir, QStringListModel, QModelIndex
+from PyQt5.QtCore import QDir, QStringListModel, QModelIndex, QThread, pyqtSignal
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog
 
@@ -11,8 +11,13 @@ from src.ui.my_ui_mainwindow import Ui_MainWindow
 from src.show_label import GetVertexes
 from src.plate_right import GetRightPlate
 from src.character_split import FindVSplitPos, FindHSplitPos, SplitCharacters
-from src.char_recognition import Get
+from src.char_recognition import GetCharModel, CharRecModel
 
+class ModelLoaderThread(QThread):
+    modelSig = pyqtSignal(object)
+    def run(self):
+        self.modelSig.emit(CharRecModel("model/plate_char_model.pth"))
+        print("模型加载完成")
 
 
 class MyMainWindow(QMainWindow, Ui_MainWindow):
@@ -20,8 +25,17 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         super(MyMainWindow, self).__init__(parent)# parent确定父组件和子组件的关系，与继承无关
         self.setupUi(self)  # 继承 Ui_MainWindow 界面类
         #加载字符检测模型
-        self.model = GetCharModel()
+        # self.char_rec_mode = CharRecModel("model/plate_char_model.pth")
+        self.char_rec_mode = None
+        self.model_loader_thread = ModelLoaderThread()
+        self.model_loader_thread.modelSig.connect(self.GetLoadedModel)
+        # 启动模型加载线程
+        self.model_loader_thread.start()
+        self.labels = [self.char_a, self.char_b,self.char_c,
+                       self.char_d,self.char_e,self.char_f, self.char_g,]
 
+    def GetLoadedModel(self, model):
+        self.char_rec_mode = model
     def showFileDialog(self):
         # 显示文件夹选择对话框
         path = QFileDialog.getExistingDirectory(self, '选择文件夹', '.', QFileDialog.ShowDirsOnly)
@@ -87,7 +101,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         nextImg = img2.copy()
         nextImg = cv2.cvtColor(nextImg, cv2.COLOR_BGR2GRAY)
         _, nextImg = cv2.threshold(nextImg, 127, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-        print(nextImg)
+        #print(nextImg)
         # splitPos =
 
         characters = SplitCharacters(nextImg)
@@ -101,6 +115,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         #print(characters.shape)
         # print(characters[0].shape)
         try:
+            for label in self.labels:
+                label.clear()
             self.char_a.setPixmap(self.cv2BinaryToPixmap(characters[0], self.char_a.size()))
             self.char_b.setPixmap(self.cv2BinaryToPixmap(characters[1], self.char_b.size()))
             self.char_c.setPixmap(self.cv2BinaryToPixmap(characters[2], self.char_c.size()))
@@ -109,10 +125,27 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             self.char_f.setPixmap(self.cv2BinaryToPixmap(characters[5], self.char_f.size()))
             self.char_g.setPixmap(self.cv2BinaryToPixmap(characters[6], self.char_g.size()))
         except IndexError:
-            print("sb")
+            pass
 
+        print("开始识别")
         # 将分割好的的字符进行识别
-
-
-
+        res = ""
+        for index, char in enumerate(characters):
+            res += self.char_rec_mode.GetChar(char)
+        try:
+            self.res_a.setText(res[0])
+            self.res_b.setText(res[1])
+            self.res_c.setText(res[2])
+            self.res_d.setText(res[3])
+            self.res_e.setText(res[4])
+            self.res_f.setText(res[5])
+            self.res_g.setText(res[6])
+        except IndexError:
+            pass
+        last = ""
+        for i in range(len(res)):
+            last += res[i]
+            if i == 1:
+                last += '·'
+        self.result.setText(last)
         pass

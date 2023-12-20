@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-# @Time    : 日期
-# @Author  : 作者
-# @Sid     : 学号
-# @File    : 当前文件名
-# @Description : 该程序的功能
+# @Time    : 2023-12-17
+# @Author  : 向波
+# @Sid     : 12103990437
+# @File    : main.py
+# @Description : 主程序入口
 import sys
 from PyQt5.QtWidgets import QApplication
 #from src.ui.my_mainwindow import MyMainWindow

@@ -9,9 +9,9 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog
 
 from src.ui.my_ui_mainwindow import Ui_MainWindow
 from src.show_label import GetVertexes
-from src.test_plate_right import GetRightPlate
+from src.plate_right import GetRightPlate
 from src.character_split import FindVSplitPos, FindHSplitPos, SplitCharacters
-#from PyQt5 import QtCore, QtGui, QtWidgets
+from src.char_recognition import Get
 
 
 
@@ -19,6 +19,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super(MyMainWindow, self).__init__(parent)# parent确定父组件和子组件的关系，与继承无关
         self.setupUi(self)  # 继承 Ui_MainWindow 界面类
+        #加载字符检测模型
+        self.model = GetCharModel()
 
     def showFileDialog(self):
         # 显示文件夹选择对话框
@@ -95,7 +97,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         cv2.polylines(img, [vertexsT], isClosed=True, color=(0, 255, 0), thickness=2)
         self.picture.setPixmap(self.cv2BgrToPixmap(img, self.picture.size()))
         self.platePos.setPixmap(self.cv2BgrToPixmap(img2, self.platePos.size()))
-        # 显示字符
+        # 将分割好的字符进行显示
         #print(characters.shape)
         # print(characters[0].shape)
         try:
@@ -108,7 +110,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             self.char_g.setPixmap(self.cv2BinaryToPixmap(characters[6], self.char_g.size()))
         except IndexError:
             print("sb")
-        # 将分割好的字符进行显示
+
+        # 将分割好的的字符进行识别
+
 
 
         pass

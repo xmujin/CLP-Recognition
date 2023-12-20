@@ -1,5 +1,10 @@
+# -*- coding: utf-8 -*-
+# @Time    : 2023-12-14
+# @Author  : 向波
+# @Sid     : 12103990437
+# @File    : plate_right.py
+# @Description : 用于将车牌进行矫正
 import os
-
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt

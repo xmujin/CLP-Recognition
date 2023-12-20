@@ -4,6 +4,7 @@
 # @Sid     : 12103990437
 # @File    : character.py
 # @Description : 用于字符分割，使用投影法，并将分割好的图片交给另一个程序进行处理
+
 # 车牌识别
 import cv2
 import numpy as np
@@ -14,42 +15,6 @@ def plot_projection(projection, title):
     plt.plot(projection)
     plt.title(title)
     plt.show()
-
-
-
-
-
-# threshold 表示空有多少才能作为分割点, 字符宽度用于判断
-# def FindVSplitPos(v, threshold=10, charctorWidth=20):
-#     starts = []
-#     ends = []
-#     # 双指针法
-#     l = 0
-#     r = 0
-#     while r < len(v):
-#         if v[r] != 0:
-#             # 移动右指针
-#             r += 1
-#         else:  # 如果碰到了0,遍历0的个数，确定是否满足分割条件
-#             temp = r
-#             count = 0  # 保存0的个数
-#             while v[temp] == 0:  # 结束时，temp已经指向了不为0的位置
-#                 count += 1
-#                 temp += 1
-#                 if temp >= len(v):
-#                     break
-#             if count >= threshold:
-#                 if r - l >= charctorWidth:
-#                     starts.append(l)
-#                     ends.append(r)
-#                 l = r + count  # 重新定位左指针的位置
-#                 r = l
-#             else:  # 如果0的个数少于预定值，表明结束位置还未确定，将右指针移动到不为0的位置
-#                 r += count
-#     if r - l >= charctorWidth:
-#         starts.append(l)
-#         ends.append(r)
-#     return [starts, ends]
 
 def FindVSplitPos(v, threshold=500, width=1, charctorWidth=10):
     starts = []

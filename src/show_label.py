@@ -3,7 +3,7 @@
 # @Author  : 向波
 # @Sid     : 12103990437
 # @File    : show_label.py
-# @Description : 该程序用于实现对图片的标注信息进行分割
+# @Description : 该程序用于实现对图片的标注信息进行分割, 并获取需要的信息
 import os
 
 import numpy as np

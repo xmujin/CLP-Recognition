@@ -5,7 +5,7 @@ import numpy as np
 from PyQt5 import QtCore
 from PyQt5.QtCore import QDir, QStringListModel, QModelIndex, QThread, pyqtSignal, QItemSelectionModel
 from PyQt5.QtGui import QPixmap, QImage
-from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog
+from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog, QLabel
 from src.ui.my_ui_mainwindow import Ui_MainWindow
 from src.show_label import GetVertexes
 from src.plate_right import GetRightPlate
@@ -44,8 +44,12 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
     def ChangeMenuIdx0(self):
         self.selectedMenuIdx = 0
+        theLabel = QLabel("第I类集中测试", self)
+        self.statusbar.addWidget(theLabel)
     def ChangeMenuIdx1(self):
         self.selectedMenuIdx = 1
+        theLabel = QLabel("第II类集中测试", self)
+        self.statusbar.addWidget(theLabel)
 
     def GetLoadedModel(self, model):
         self.char_rec_mode = model

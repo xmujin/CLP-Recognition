@@ -16,7 +16,7 @@ def plot_projection(projection, title):
     plt.title(title)
     plt.show()
 
-def FindVSplitPos(v, threshold=500, width=1, charctorWidth=10):
+def FindVSplitPos(v, threshold=800, width=1, charctorWidth=5):
     starts = []
     ends = []
     # 双指针法
@@ -78,31 +78,116 @@ def FindHSplitPos(h, threshold=10000, width=30):
                 l = r  # 移动左指针
     return [start, end]
 
-# 传入二值图并分割
+# 传入二值图并分割, 使用优先适应算法
 def SplitCharacters(binary):
+    characters1 = SplitCharacters1(binary)
+    characters2 = SplitCharacters2(binary)
+    # print("1.分割的字符数", len(characters1))
+    # print("2.分割的字符数", len(characters2))
+    if len(characters1) == len(characters2) :
+        return characters1
+    elif len(characters1) > len(characters2):
+        return characters1
+    elif len(characters1) < len(characters2):
+        return characters2
+
+
+
+
+
+
+# 分割算法1
+def SplitCharacters1(binary):
     # 计算水平投影
     hProjection = np.sum(binary, axis=1)
     # 通过水平投影分割图片
     h_split = binary.copy()
     s, e = FindHSplitPos(hProjection)
-    h_split = h_split[s : e, :]
+    h_split = h_split[s: e, :]
     characters = []
     # 进行垂直分割
     # 计算投影,用分割好的计算
     vProjection = np.sum(h_split, axis=0)
     starts, ends = FindVSplitPos(vProjection)
-    #print([starts, ends])
+    # print([starts, ends])
     # 分割并腐蚀
     kernel = np.ones((3, 3), np.uint8)
     for start, end in zip(starts, ends):
         c = h_split[:, start:end]
-        #c = cv2.erode(c, kernel, iterations=1)
+        # c = cv2.erode(c, kernel, iterations=1)
+        characters.append(c)
+    return characters
+
+def SplitCharacters2(binary):
+    kernel = np.ones((3, 3), np.uint8)
+    img = cv2.erode(binary, kernel, iterations=1)
+    # 计算水平投影，用腐蚀过后的图像进行分割
+    hProjection = np.sum(img, axis=1)
+    # 通过水平投影分割图片
+    h_split = binary.copy()
+    s, e = FindHSplitPos(hProjection)
+    h_split = h_split[s: e, :]
+    characters = []
+    # 进行垂直分割
+    # 计算投影,用分割好的计算
+    vProjection = np.sum(h_split, axis=0)
+    starts, ends = FindVSplitPos(vProjection)
+    # print([starts, ends])
+    # 分割并腐蚀
+    kernel = np.ones((3, 3), np.uint8)
+    for start, end in zip(starts, ends):
+        c = h_split[:, start:end]
+        # c = cv2.erode(c, kernel, iterations=1)
         characters.append(c)
     return characters
 
 
+
+
+
+
+
+def SplitPosPlate(bgrImg):
+    """
+    为BGR车牌画上分割位置，并返回具有分割位置的车牌图片
+    :param binary:
+    """
+    binary = cv2.cvtColor(bgrImg.copy(), cv2.COLOR_BGR2GRAY)
+    _, binary = cv2.threshold(binary, 127, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    # 将灰度图转为BGR图
+    resImg = cv2.cvtColor(binary, cv2.COLOR_GRAY2BGR)
+
+    # 计算水平投影
+    hProjection = np.sum(binary, axis=1)
+
+    # 通过水平投影分割图片
+    a, b = FindHSplitPos(hProjection)
+    # #################将水平线画在图片上######################
+    # 定义水平线的起始点和结束点, x， y
+    s1 = (0, a)
+    e1 = (resImg.shape[1], a)
+    s2 = (0, b)
+    e2 = (resImg.shape[1], b)
+
+    cv2.line(resImg, s1, e1, (0, 255, 0), thickness=1)
+    cv2.line(resImg, s2, e2, (0, 255, 0), thickness=1)
+    ##################################################
+    ## 绘制垂直线
+    h_split = binary.copy()
+    h_split = h_split[a: b, :]
+    # # 计算垂直投影,用分割好的计算
+    vProjection = np.sum(h_split, axis=0)
+    # 获得分割好的位置，依次画线   (1,2)  (3,4)   列数代表分割位置有多少个
+    starts, ends = FindVSplitPos(vProjection)
+    for start, end in zip(starts, ends):
+        cv2.line(resImg, (start, 0), (start, resImg.shape[0]), (0, 0, 222), thickness=1)
+        cv2.line(resImg, (end, 0), (end, resImg.shape[0]), (0, 0, 222), thickness=1)
+    return resImg
+
+
+
 if __name__ == "__main__":
-    image_path = "../dataset/last_dataset/sb/02-99_71-203&483_427&583-429&608_210&562_193&472_412&518-0_0_11_24_11_32_33-103-15.jpg"
+    image_path = "../dataset/plate_dataset/00891522988505-90_88-189&653_361&717-366&710_182&727_186&658_370&641-0_0_1_1_33_26_24-130-14.jpg"
 
     # 读取图像
     img = cv2.imread(image_path, 0)

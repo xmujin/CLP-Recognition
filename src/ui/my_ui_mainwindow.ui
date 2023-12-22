@@ -92,6 +92,9 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="selectionMode">
+           <enum>QAbstractItemView::SingleSelection</enum>
+          </property>
          </widget>
         </item>
         <item>
@@ -165,7 +168,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_10">
+         <widget class="QLabel" name="splitPosPlate">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -329,7 +332,7 @@
         <property name="font">
          <font>
           <family>微软雅黑</family>
-          <pointsize>10</pointsize>
+          <pointsize>15</pointsize>
          </font>
         </property>
         <property name="text">
@@ -357,7 +360,7 @@
         <property name="font">
          <font>
           <family>微软雅黑</family>
-          <pointsize>10</pointsize>
+          <pointsize>15</pointsize>
          </font>
         </property>
         <property name="alignment">
@@ -379,7 +382,7 @@
         <property name="font">
          <font>
           <family>微软雅黑</family>
-          <pointsize>10</pointsize>
+          <pointsize>15</pointsize>
          </font>
         </property>
         <property name="alignment">
@@ -401,7 +404,7 @@
         <property name="font">
          <font>
           <family>微软雅黑</family>
-          <pointsize>10</pointsize>
+          <pointsize>15</pointsize>
          </font>
         </property>
         <property name="alignment">
@@ -423,7 +426,7 @@
         <property name="font">
          <font>
           <family>微软雅黑</family>
-          <pointsize>10</pointsize>
+          <pointsize>15</pointsize>
          </font>
         </property>
         <property name="alignment">
@@ -445,7 +448,7 @@
         <property name="font">
          <font>
           <family>微软雅黑</family>
-          <pointsize>10</pointsize>
+          <pointsize>15</pointsize>
          </font>
         </property>
         <property name="alignment">
@@ -467,7 +470,7 @@
         <property name="font">
          <font>
           <family>微软雅黑</family>
-          <pointsize>10</pointsize>
+          <pointsize>15</pointsize>
          </font>
         </property>
         <property name="alignment">
@@ -519,6 +522,12 @@
           <height>30</height>
          </size>
         </property>
+        <property name="font">
+         <font>
+          <family>Adobe Arabic</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -558,7 +567,7 @@
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>100</width>
+          <width>200</width>
           <height>20</height>
          </size>
         </property>
@@ -572,6 +581,12 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>45</height>
+         </size>
+        </property>
         <property name="text">
          <string>上一张</string>
         </property>
@@ -582,9 +597,12 @@
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Preferred</enum>
+        </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>250</width>
+          <width>150</width>
           <height>20</height>
          </size>
         </property>
@@ -610,7 +628,7 @@
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>100</width>
+          <width>200</width>
           <height>20</height>
          </size>
         </property>
@@ -633,18 +651,18 @@
     <property name="title">
      <string>测试</string>
     </property>
-    <addaction name="actionI"/>
-    <addaction name="actionII"/>
+    <addaction name="action1"/>
+    <addaction name="action2"/>
    </widget>
    <addaction name="menu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionI">
+  <action name="action1">
    <property name="text">
     <string>I类车牌集中测试</string>
    </property>
   </action>
-  <action name="actionII">
+  <action name="action2">
    <property name="text">
     <string>II类车牌集中测试</string>
    </property>
@@ -691,12 +709,44 @@
    <slot>showRecognition()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>768</x>
-     <y>464</y>
+     <x>976</x>
+     <y>401</y>
     </hint>
     <hint type="destinationlabel">
      <x>619</x>
      <y>42</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>toPre()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>293</x>
+     <y>731</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>153</x>
+     <y>737</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_3</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>toNext()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>705</x>
+     <y>737</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>869</x>
+     <y>737</y>
     </hint>
    </hints>
   </connection>
@@ -705,5 +755,7 @@
   <slot>showFileDialog()</slot>
   <slot>showPicture()</slot>
   <slot>showRecognition()</slot>
+  <slot>toPre()</slot>
+  <slot>toNext()</slot>
  </slots>
 </ui>

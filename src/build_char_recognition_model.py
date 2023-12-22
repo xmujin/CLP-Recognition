@@ -119,6 +119,6 @@ if __name__ == "__main__":
     optimizer = optim.Adam(model.parameters(), lr=0.001)
     # #
     # # # 训练模型
-    train(model, train_loader, criterion, optimizer, num_epochs=10)
+    train(model, train_loader, criterion, optimizer, num_epochs=80)
     # 保存训练好的模型
     torch.save(model.state_dict(), "../model/plate_char_model.pth")
